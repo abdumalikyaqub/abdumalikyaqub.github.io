@@ -42,9 +42,15 @@
       </p>
     </section>
 
+    <!-- ========== ФИЛЬТР ПО ЖАНРУ ========== -->
+    <section class="filter-section container" aria-label="Фильтр по жанру">
+      <!-- Кнопки генерируются скриптом автоматически -->
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="Выберите жанр"></div>
+    </section>
+
     <!-- ========== СПИСОК КНИГ ========== -->
     <section class="books-section container" aria-label="Список книг">
-      <div class="books-grid">
+      <div class="books-grid" id="books-grid">
 
         <!-- Карточка 1 -->
         <article class="book-card" id="book-1">
@@ -195,6 +201,12 @@
           </p>
         </article>
 
+        <!-- Пустое состояние: показывается если нет результатов -->
+        <div class="no-results" id="no-results" hidden>
+          <span class="no-results-icon" aria-hidden="true">📭</span>
+          <p>По этому жанру книг пока нет.</p>
+        </div>
+
       </div><!-- /.books-grid -->
     </section>
   </main>
@@ -207,6 +219,63 @@
       <p class="footer-copy">© 2025 Читаем вместе</p>
     </div>
   </footer>
+
+  <!-- ========== ФИЛЬТРАЦИЯ ПО ЖАНРУ (JavaScript) ========== -->
+  <script>
+    (function () {
+      const filterBar  = document.getElementById('filter-bar');
+      const booksGrid  = document.getElementById('books-grid');
+      const noResults  = document.getElementById('no-results');
+      const cards      = Array.from(document.querySelectorAll('.book-card'));
+
+      /* --- Собираем уникальные жанры из карточек --- */
+      const genres = Array.from(
+        new Set(cards.map(card => card.querySelector('.genre-tag').textContent.trim()))
+      ).sort((a, b) => a.localeCompare(b, 'ru'));
+
+      /* --- Создаём кнопку «Все» --- */
+      function makeBtn(label, value) {
+        const btn = document.createElement('button');
+        btn.className    = 'filter-btn';
+        btn.textContent  = label;
+        btn.dataset.genre = value;
+        btn.setAttribute('aria-pressed', value === 'all' ? 'true' : 'false');
+        if (value === 'all') btn.classList.add('active');
+        btn.addEventListener('click', () => applyFilter(value));
+        return btn;
+      }
+
+      filterBar.appendChild(makeBtn('Все', 'all'));
+      genres.forEach(g => filterBar.appendChild(makeBtn(g, g)));
+
+      /* --- Логика фильтрации --- */
+      function applyFilter(selected) {
+        /* Обновляем состояние кнопок */
+        filterBar.querySelectorAll('.filter-btn').forEach(btn => {
+          const isActive = btn.dataset.genre === selected;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        /* Показываем/скрываем карточки с анимацией */
+        let visible = 0;
+        cards.forEach(card => {
+          const genre  = card.querySelector('.genre-tag').textContent.trim();
+          const match  = selected === 'all' || genre === selected;
+
+          if (match) {
+            card.classList.remove('hidden');
+            visible++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        /* Пустое состояние */
+        noResults.hidden = visible > 0;
+      }
+    })();
+  </script>
 
 </body>
 </html>

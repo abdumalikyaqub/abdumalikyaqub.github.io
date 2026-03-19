@@ -120,6 +120,58 @@ body {
   max-width: 480px;
 }
 
+/* ---------- ФИЛЬТР ПО ЖАНРУ ---------- */
+.filter-section {
+  padding-bottom: 28px;
+}
+
+/* Горизонтально прокручиваемая полоса кнопок */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;               /* на десктопе переносится */
+  gap: 8px;
+  overflow-x: auto;              /* горизонтальный скролл на мобильных */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;         /* Firefox: убираем полосу прокрутки */
+  padding-bottom: 2px;           /* место для outline при фокусе */
+}
+.filter-bar::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari: убираем полосу прокрутки */
+}
+
+/* Кнопка-фильтр */
+.filter-btn {
+  flex-shrink: 0;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 7px 16px;
+  border-radius: 99px;
+  border: 1.5px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-muted);
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Активная кнопка — заполненная */
+.filter-btn.active {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.filter-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 /* ---------- СЕКЦИЯ КНИГ ---------- */
 .books-section {
   padding-bottom: 80px;
@@ -142,13 +194,22 @@ body {
   flex-direction: column;
   gap: 10px;
 
-  /* Плавный переход при наведении */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* Плавный переход при наведении и при фильтрации */
+  transition:
+    border-color 0.2s ease,
+    box-shadow   0.2s ease,
+    opacity      0.25s ease,
+    transform    0.25s ease;
 }
 
 .book-card:hover {
   border-color: var(--color-accent);
   box-shadow: 0 4px 20px rgba(224, 123, 57, 0.08);
+}
+
+/* Скрытая карточка (при фильтрации) */
+.book-card.hidden {
+  display: none;
 }
 
 /* Блок мета-информации (жанр) */
@@ -203,6 +264,25 @@ body {
   color: var(--color-muted);
   line-height: 1.7;
   flex-grow: 1;          /* растягивает описание, выравнивая карточки по высоте */
+}
+
+/* ---------- ПУСТОЕ СОСТОЯНИЕ ---------- */
+.no-results {
+  grid-column: 1 / -1;           /* занимает всю ширину сетки */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 20px;
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.no-results-icon {
+  font-size: 2.5rem;
+  line-height: 1;
 }
 
 /* ---------- ПОДВАЛ ---------- */
@@ -266,5 +346,10 @@ body {
 
   .book-card {
     padding: 18px;
+  }
+
+  /* На маленьких экранах кнопки фильтра в строку без переноса */
+  .filter-bar {
+    flex-wrap: nowrap;
   }
 }
