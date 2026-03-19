@@ -1,0 +1,270 @@
+/* ============================================================
+   Читаем вместе — таблица стилей
+   Палитра: белый фон, почти-чёрный текст, оранжевый акцент
+   ============================================================ */
+
+/* ---------- Базовые сбросы и CSS-переменные ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Цвета */
+  --color-bg:        #ffffff;
+  --color-surface:   #f7f7f5;      /* фон карточки */
+  --color-border:    #e8e8e4;
+  --color-text:      #1a1a1a;      /* основной текст */
+  --color-muted:     #6b6b6b;      /* второстепенный текст */
+  --color-accent:    #e07b39;      /* акцентный оранжевый */
+  --color-accent-bg: #fdf1e8;      /* светлый фон жанрового тега */
+
+  /* Типографика */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Размеры */
+  --radius:       10px;
+  --container:    1120px;
+  --gap:          24px;
+}
+
+/* ---------- Глобальные базовые стили ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.65;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Вспомогательный класс: центрирует контент и ограничивает ширину */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ---------- ШАПКА ---------- */
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 20px;
+  background-color: var(--color-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Логотип */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.logo-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+/* Подзаголовок в шапке */
+.header-tagline {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* ---------- HERO-СЕКЦИЯ ---------- */
+.hero {
+  padding-block: 64px 40px;
+  max-width: 640px;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+/* Акцентная точка в заголовке */
+.hero-title::after {
+  content: '.';
+  color: var(--color-accent);
+}
+
+.hero-subtitle {
+  font-size: 1.0625rem;
+  color: var(--color-muted);
+  max-width: 480px;
+}
+
+/* ---------- СЕКЦИЯ КНИГ ---------- */
+.books-section {
+  padding-bottom: 80px;
+}
+
+/* Адаптивная сетка: авто-заполнение колонками минимум 300px */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--gap);
+}
+
+/* ---------- КАРТОЧКА КНИГИ ---------- */
+.book-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* Плавный переход при наведении */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 20px rgba(224, 123, 57, 0.08);
+}
+
+/* Блок мета-информации (жанр) */
+.book-meta {
+  display: flex;
+  align-items: center;
+}
+
+/* Жанровый тег */
+.genre-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background-color: var(--color-accent-bg);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+/* Название книги */
+.book-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+/* Автор */
+.book-author {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+/* Горизонтальный разделитель между автором и описанием */
+.book-author::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background-color: var(--color-border);
+  margin-bottom: 10px;
+  margin-top: 2px;
+}
+
+/* Описание */
+.book-description {
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+  line-height: 1.7;
+  flex-grow: 1;          /* растягивает описание, выравнивая карточки по высоте */
+}
+
+/* ---------- ПОДВАЛ ---------- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: 40px;
+  background-color: var(--color-surface);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.footer-note {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.footer-copy {
+  font-size: 0.8125rem;
+  color: var(--color-border);
+  margin-top: 8px;
+}
+
+/* ---------- АДАПТИВНОСТЬ ---------- */
+
+/* Планшеты и меньше */
+@media (max-width: 768px) {
+  .header-tagline {
+    display: none;      /* убираем подзаголовок в шапке на маленьких экранах */
+  }
+
+  .hero {
+    padding-block: 40px 28px;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;   /* одна колонка на мобильных */
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 400px) {
+  .logo-text {
+    font-size: 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .book-card {
+    padding: 18px;
+  }
+}
